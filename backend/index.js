@@ -6,8 +6,8 @@ const app = express();
 
 
 //use config module to get the privatekey, if no private key set, end the application
-if (!config.get("myprivatekey")) {
-  console.error("FATAL ERROR: myprivatekey is not defined.");
+if (!config.get("secretkey")) {
+  console.error("FATAL ERROR: secretkey is not defined.");
   process.exit(1);
 }
 
