@@ -1,6 +1,7 @@
 const config = require("config");
 const mongoose = require("mongoose");
 const usersRoute = require("./routes/user.route");
+const authRoute = require("./routes/auth.route")
 const express = require("express");
 const app = express();
 
@@ -23,8 +24,10 @@ mongoose
 
 
 app.use(express.json());
-//use users route for api/users
+
+// routes
 app.use("/api/users", usersRoute);
+app.use("/api/auth", authRoute);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

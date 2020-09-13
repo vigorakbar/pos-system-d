@@ -5,18 +5,18 @@ const mongoose = require('mongoose');
 
 //simple schema
 const UserSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 50
+    maxlength: 50,
+    unique: true
   },
   email: {
     type: String,
     required: true,
     minlength: 5,
     maxlength: 255,
-    unique: true
   },
   password: {
     type: String,
@@ -37,16 +37,23 @@ UserSchema.methods.generateAuthToken = function() {
 
 const User = mongoose.model('User', UserSchema);
 
-//function to validate user 
-function validateUser(user) {
-  const schema = {
-    name: Joi.string().min(3).max(50).required(),
-    email: Joi.string().min(5).max(255).required().email(),
-    password: Joi.string().min(3).max(255).required()
-  };
+const USER_USERNAME_VALIDATION = Joi.string().min(3).max(50).required()
+const USER_EMAIL_VALIDATION = Joi.string().min(5).max(255).required().email()
+const USER_PASSWORD_VALIDATION = Joi.string().min(3).max(255).required()
 
-  return Joi.validate(user, schema);
+//function to validate user
+function validateUser(user) {
+  const schema = Joi.object({
+    username: USER_USERNAME_VALIDATION,
+    email: USER_EMAIL_VALIDATION,
+    password: USER_PASSWORD_VALIDATION
+  });
+
+  return schema.validate(user);
 }
 
-exports.User = User; 
+exports.User = User;
 exports.validate = validateUser;
+exports.USER_USERNAME_VALIDATION = USER_USERNAME_VALIDATION;
+exports.USER_EMAIL_VALIDATION = USER_EMAIL_VALIDATION;
+exports.USER_PASSWORD_VALIDATION = USER_PASSWORD_VALIDATION;

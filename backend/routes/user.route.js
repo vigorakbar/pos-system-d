@@ -15,11 +15,11 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   //find an existing user
-  let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("User already registered.");
+  let user = await User.findOne({ username: req.body.username });
+  if (user) return res.status(409).send("User already registered.");
 
   user = new User({
-    name: req.body.name,
+    username: req.body.username,
     password: req.body.password,
     email: req.body.email
   });
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
   const token = user.generateAuthToken();
   res.header("x-auth-token", token).send({
     _id: user._id,
-    name: user.name,
+    username: user.username,
     email: user.email
   });
 });
