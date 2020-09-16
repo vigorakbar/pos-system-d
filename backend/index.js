@@ -14,7 +14,7 @@ if (!config.get("secretkey")) {
 
 //connect to mongodb
 mongoose
-  .connect("mongodb://localhost/nodejsauth", {
+  .connect("mongodb://localhost/pos-sys-d", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
