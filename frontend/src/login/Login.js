@@ -33,7 +33,10 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault()
     if (!errorStatus.username && !errorStatus.password) {
-      axios.post('')
+      axios.post('http://localhost:3001/api/auth/login', {
+        username: account.username,
+        password: account.password
+      }).then((data) => console.log(data))
     }
   }
 
