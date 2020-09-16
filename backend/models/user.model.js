@@ -21,8 +21,6 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 3,
-    maxlength: 255
   },
   //give different access rights if admin or not 
   isAdmin: Boolean
