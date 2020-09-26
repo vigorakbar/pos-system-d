@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
 
   //find an existing user
   let user = await User.findOne({ username: req.body.username });
-  if (user) return res.status(409).send("User already registered.");
+  if (user) return res.status(409).send(`User dengan username ${user.username} sudah terdaftar.`);
 
   user = new User({
     username: req.body.username,

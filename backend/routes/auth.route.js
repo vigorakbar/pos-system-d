@@ -15,12 +15,13 @@ router.post("/login", async (req, res) => {
 
   //find an existing user
   let user = await User.findOne({ username: req.body.username });
-  if (!user) return res.status(401).send("Wrong username or password")
+  if (!user) return res.status(401).send("Username atau password salah")
   const passwordValid = await bcrypt.compare(req.body.password, user.password)
-  if (!passwordValid) return res.status(401).send("Wrong username or password")
+  if (!passwordValid) return res.status(401).send("Username atau password salah")
 
   const token = user.generateAuthToken();
-  res.header("x-auth-token", token).send({
+  res.cookie('auth_token', token, { httpOnly: true });
+  res.json({
     _id: user._id,
     username: user.username,
     email: user.email

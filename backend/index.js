@@ -1,6 +1,7 @@
 const config = require("config");
 const mongoose = require("mongoose");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const usersRoute = require("./routes/user.route");
 const authRoute = require("./routes/auth.route")
@@ -23,13 +24,13 @@ mongoose
   .then(() => console.log("Connected to MongoDB..."))
   .catch(err => console.error("Could not connect to MongoDB...", err));
 
-const clientPort = process.env.CLIENT_PORT || 3000;
-app.use(cors({ origin: `http://localhost:${clientPort}` }))
+const port = process.env.PORT || 3001;
+app.use(cors({ origin: `http://localhost:${port}` }))
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRoute);
 
-const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
