@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const csurf = require("csurf");
 const usersRoute = require("./routes/user.route");
 const authRoute = require("./routes/auth.route")
 const app = express();
@@ -28,6 +29,14 @@ const port = process.env.PORT || 3001;
 app.use(cors({ origin: `http://localhost:${port}` }))
 app.use(express.json());
 app.use(cookieParser());
+// CSRF protection
+const csrfProtection = csurf({
+  cookie: true
+});
+app.use(csrfProtection);
+app.get('/api/csrf-token', (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
 
 // routes
 app.use("/api/users", usersRoute);

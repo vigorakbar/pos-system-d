@@ -32,7 +32,7 @@ const Login = () => {
     if (locState.errorMessage) {
       setSnackBarError(locState.errorMessage);
     }
-  }, []);
+  }, [locState.errorMessage]);
 
 
   /* Login handling */

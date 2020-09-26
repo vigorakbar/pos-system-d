@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios';
 import { Route, Redirect } from 'react-router-dom'
-import { CircularProgress } from '@material-ui/core';
+import BlankLoading from './BlankLoading';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,19 +18,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         setIsLoading(false);
       })
   }, []);
-
-  const loadingComponent = () => (
-    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <CircularProgress size={80} />
-    </div>
-  );
   
 
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isLoading) return loadingComponent();
+        if (isLoading) return <BlankLoading />;
         if (loggedInUser) return <Component {...props} loggedInUser={loggedInUser} />
         return (
           <Redirect
