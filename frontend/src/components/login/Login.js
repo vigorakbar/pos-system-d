@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import { useHistory, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, CardActions, Typography } from '@material-ui/core';
-import TextField from '../components/BasicTextField';
-import Button from '../components/BasicButton';
+import { Alert } from '@material-ui/lab';
+import TextField from '../common/BasicTextField';
+import Button from '../common/BasicButton';
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +23,19 @@ const useStyles = makeStyles({
 
 const Login = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+  const locState = location.state || {};
+
+  /* Handle redirect error message */
+  useEffect(() => {
+    if (locState.errorMessage) {
+      setSnackBarError(locState.errorMessage);
+    }
+  }, []);
+
+
+  /* Login handling */
   const [account, setAccount] = useState({
     username: '',
     password: ''
@@ -29,14 +44,23 @@ const Login = () => {
     username: '',
     password: ''
   })
+  const [snackBarError, setSnackBarError] = useState('')
 
   const onSubmit = (e) => {
     e.preventDefault()
     if (!errorStatus.username && !errorStatus.password) {
-      axios.post('http://localhost:3001/api/auth/login', {
+      Axios.post('/api/auth/login', {
         username: account.username,
         password: account.password
-      }).then((data) => console.log(data))
+      })
+        .then((data) => {
+          history.push(locState.from || '/home')
+        })
+        .catch((error = {}) => {
+          const errorMessage = error.response && (error.response.data || error.message);
+          setSnackBarError(errorMessage)
+          console.log(error)
+        })
     }
   }
 
@@ -47,6 +71,7 @@ const Login = () => {
       ...error,
       [fieldId]: errorMessage
     }))
+    setSnackBarError('');
   }
 
   return (
@@ -77,6 +102,7 @@ const Login = () => {
               error={Boolean(errorStatus.password)}
               helperText={errorStatus.password}
             />
+            {snackBarError && <Alert severity="error">{snackBarError}</Alert>}
           </CardContent>
           <CardActions className={classes.cardActions}>
             <Button type="submit">
