@@ -1,4 +1,5 @@
 import React from "react";
+import Axios from 'axios';
 import clsx from "clsx";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import {
@@ -19,6 +20,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 
 const drawerWidth = 240;
 
@@ -91,6 +93,10 @@ const Home = () => {
     setOpen(false);
   };
 
+  const handleLogout = () => {
+    Axios.get('/api/users/current')
+  };
+
   const { path, url } = useRouteMatch();
 
   return (
@@ -144,14 +150,12 @@ const Home = () => {
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
         </List>
       </Drawer>
       <main
