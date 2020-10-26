@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios';
 import { Route, Redirect } from 'react-router-dom'
-import BlankLoading from './BlankLoading';
+import BlankLoading from '../common/BlankLoading';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [isLoading, setIsLoading] = useState(true);
