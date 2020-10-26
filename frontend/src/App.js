@@ -4,8 +4,8 @@ import Axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
 import Login from './components/login/Login';
 import PrivateRoute from './components/common/PrivateRoute';
-import Test from './components/test/Test';
 import BlankLoading from './components/common/BlankLoading';
+import Home from './components/home/Home';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -25,7 +25,7 @@ function App() {
       : (
         <Switch>
           <Route exact path='/' component={Login} />
-          <PrivateRoute path='/test' component={Test} />
+          <PrivateRoute path='/home' component={Home} />
         </Switch>
       )}
     </div>
