@@ -6,6 +6,7 @@ import { Card, CardContent, CardActions, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import TextField from '../common/BasicTextField';
 import Button from '../common/BasicButton';
+import BlankLoading from '../common/BlankLoading';
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +27,18 @@ const Login = () => {
   const history = useHistory();
   const location = useLocation();
   const locState = location.state || {};
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    Axios.get('/api/users/current')
+      .then(() => {
+        setIsLoading(false)
+        history.push('/home')
+      })
+      .catch(() => {
+        setIsLoading(false)
+      })
+  }, [history]);
 
   /* Handle redirect error message */
   useEffect(() => {
@@ -73,6 +86,8 @@ const Login = () => {
     }))
     setSnackBarError('');
   }
+
+  if (isLoading) return <BlankLoading />
 
   return (
     <div className={classes.root}>
