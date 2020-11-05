@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import clsx from "clsx";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import {
   AppBar,
   CssBaseline,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Divider,
   Drawer,
   IconButton,
@@ -22,6 +25,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import InputIcon from "@material-ui/icons/Input";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import HomeRoute from "../routes/HomeRoute";
+import BasicButton from "../common/BasicButton";
 
 const drawerWidth = 240;
 
@@ -84,6 +88,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const history = useHistory()
+
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
@@ -95,15 +101,37 @@ const Home = () => {
   };
 
   const handleLogout = () => {
-    Axios.get("/api/users/current");
+    Axios.post("/api/auth/logout")
+    .then(() => history.push('/'))
+    .catch((err) => {
+      console.log('Logout failed', err)
+    })
   };
 
   const [pageTitle, setPageTitle] = useState("Home");
+  const [openLogout, setOpenLogout] = useState(false);
 
   const { path, url } = useRouteMatch();
 
   return (
     <div className={classes.root}>
+      <Dialog
+        open={openLogout}
+        onClose={() => setOpenLogout(false)}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Apakah anda yakin untuk logout?
+        </DialogTitle>
+        <DialogActions>
+          <BasicButton onClick={() => setOpenLogout(false)} color="default">
+            Batal
+          </BasicButton>
+          <BasicButton onClick={handleLogout} color="secondary" autoFocus>
+            Logout
+          </BasicButton>
+        </DialogActions>
+      </Dialog>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -162,7 +190,7 @@ const Home = () => {
         </List>
         <Divider />
         <List>
-          <ListItem button onClick={handleLogout}>
+          <ListItem button onClick={() => setOpenLogout(true)}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
