@@ -28,4 +28,11 @@ router.post("/login", async (req, res) => {
   });
 })
 
+router.post("/logout", async (req, res) => {
+  res.clearCookie('auth_token');
+  res.json({
+    message: 'Logout success'
+  })
+})
+
 module.exports = router;
