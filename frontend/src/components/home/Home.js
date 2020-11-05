@@ -1,7 +1,7 @@
-import React from "react";
-import Axios from 'axios';
+import React, { useState } from "react";
+import Axios from "axios";
 import clsx from "clsx";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import {
   AppBar,
   CssBaseline,
@@ -18,9 +18,10 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import HomeIcon from "@material-ui/icons/Home";
+import InputIcon from "@material-ui/icons/Input";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
+import HomeRoute from "../routes/HomeRoute";
 
 const drawerWidth = 240;
 
@@ -94,8 +95,10 @@ const Home = () => {
   };
 
   const handleLogout = () => {
-    Axios.get('/api/users/current')
+    Axios.get("/api/users/current");
   };
+
+  const [pageTitle, setPageTitle] = useState("Home");
 
   const { path, url } = useRouteMatch();
 
@@ -119,7 +122,7 @@ const Home = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            {pageTitle}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -139,14 +142,23 @@ const Home = () => {
         </div>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button key="Home" component={Link} to={url}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem
+            button
+            key="input-barang"
+            component={Link}
+            to={`${url}/input-barang`}
+          >
+            <ListItemIcon>
+              <InputIcon />
+            </ListItemIcon>
+            <ListItemText primary="Input Barang" />
+          </ListItem>
         </List>
         <Divider />
         <List>
@@ -165,12 +177,19 @@ const Home = () => {
       >
         <div className={classes.drawerHeader} />
         <Switch>
-          <Route exact path={path}>
-            <h3>Halaman depan</h3>
-          </Route>
-          <Route path={`${path}/input-barang`}>
-            <h3>Halaman Input Barang</h3>
-          </Route>
+          <HomeRoute
+            exact
+            path={path}
+            setPageTitle={setPageTitle}
+            title="Home"
+            component={() => <h3>test home</h3>}
+          />
+          <HomeRoute
+            path={`${path}/input-barang`}
+            setPageTitle={setPageTitle}
+            title="Input Barang"
+            component={() => <h3>test input barang</h3>}
+          />
         </Switch>
       </main>
     </div>
