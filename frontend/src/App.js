@@ -3,7 +3,7 @@ import './App.css';
 import Axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
 import Login from './components/login/Login';
-import PrivateRoute from './components/auth/PrivateRoute';
+import PrivateRoute from './components/routes/PrivateRoute';
 import BlankLoading from './components/common/BlankLoading';
 import Home from './components/home/Home';
 
