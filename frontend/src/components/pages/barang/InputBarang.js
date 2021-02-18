@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import {
   Dialog,
@@ -8,7 +8,6 @@ import {
   DialogTitle,
   InputAdornment,
   makeStyles,
-  TextField,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import BasicButton from "../../common/BasicButton";
@@ -28,32 +27,38 @@ const useStyles = makeStyles({
 const InputBarang = () => {
   const classes = useStyles();
   const [addModal, setAddModal] = useState(false);
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      nama: "test nama1",
-      jenis: "test jenis",
-      volume: 1,
-      hargaBeli: 123,
-      hargaJual: 123,
-    },
-    {
-      id: 2,
-      nama: "test nama2",
-      jenis: "test jenis",
-      volume: 1,
-      hargaBeli: 123,
-      hargaJual: 123,
-    },
-    {
-      id: 3,
-      nama: "test nama3",
-      jenis: "test jenis",
-      volume: 1,
-      hargaBeli: 123,
-      hargaJual: 123,
-    },
-  ]);
+
+  // Table data handling
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    setRows([
+      {
+        id: 1,
+        nama: "test nama1",
+        jenis: "test jenis",
+        volume: 1,
+        hargaBeli: 123,
+        hargaJual: 123,
+      },
+      {
+        id: 2,
+        nama: "test nama2",
+        jenis: "test jenis",
+        volume: 1,
+        hargaBeli: 123,
+        hargaJual: 123,
+      },
+      {
+        id: 3,
+        nama: "test nama3",
+        jenis: "test jenis",
+        volume: 1,
+        hargaBeli: 123,
+        hargaJual: 123,
+      },
+    ])
+  }, [])
+
   const columns = [
     {
       field: "nama",
