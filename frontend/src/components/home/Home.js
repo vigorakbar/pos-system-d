@@ -26,6 +26,7 @@ import InputIcon from "@material-ui/icons/Input";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import HomeRoute from "../routes/HomeRoute";
 import BasicButton from "../common/BasicButton";
+import InputBarang from "../pages/barang/InputBarang";
 
 const drawerWidth = 240;
 
@@ -216,7 +217,7 @@ const Home = () => {
             path={`${path}/input-barang`}
             setPageTitle={setPageTitle}
             title="Input Barang"
-            component={() => <h3>test input barang</h3>}
+            component={InputBarang}
           />
         </Switch>
       </main>

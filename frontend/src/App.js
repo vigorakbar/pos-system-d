@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
-import Login from './components/login/Login';
+import Login from './components/pages/login/Login';
 import PrivateRoute from './components/routes/PrivateRoute';
 import BlankLoading from './components/common/BlankLoading';
 import Home from './components/home/Home';

@@ -4,9 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, CardActions, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import TextField from '../common/BasicTextField';
-import Button from '../common/BasicButton';
-import BlankLoading from '../common/BlankLoading';
+import TextField from '../../common/BasicTextField';
+import Button from '../../common/BasicButton';
+import BlankLoading from '../../common/BlankLoading';
 
 const useStyles = makeStyles({
   root: {
