@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import Axios from "axios";
 import clsx from "clsx";
 import { Link, Switch, useHistory, useRouteMatch } from "react-router-dom";
@@ -26,7 +26,9 @@ import InputIcon from "@material-ui/icons/Input";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import HomeRoute from "../routes/HomeRoute";
 import BasicButton from "../common/BasicButton";
-import InputBarang from "../pages/barang/InputBarang";
+import SuspenseLoading from "../common/SuspenseLoading";
+
+const InputBarang = lazy(() => import("../pages/barang/InputBarang"));
 
 const drawerWidth = 240;
 
@@ -89,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
-  const history = useHistory()
+  const history = useHistory();
 
   const [open, setOpen] = React.useState(true);
 
@@ -103,10 +105,10 @@ const Home = () => {
 
   const handleLogout = () => {
     Axios.post("/api/auth/logout")
-    .then(() => history.push('/'))
-    .catch((err) => {
-      console.log('Logout failed', err)
-    })
+      .then(() => history.push("/"))
+      .catch((err) => {
+        console.log("Logout failed", err);
+      });
   };
 
   const [pageTitle, setPageTitle] = useState("Home");
@@ -205,21 +207,23 @@ const Home = () => {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Switch>
-          <HomeRoute
-            exact
-            path={path}
-            setPageTitle={setPageTitle}
-            title="Home"
-            component={() => <h3>test home</h3>}
-          />
-          <HomeRoute
-            path={`${path}/input-barang`}
-            setPageTitle={setPageTitle}
-            title="Input Barang"
-            component={InputBarang}
-          />
-        </Switch>
+        <Suspense fallback={<SuspenseLoading />}>
+          <Switch>
+            <HomeRoute
+              exact
+              path={path}
+              setPageTitle={setPageTitle}
+              title="Home"
+              component={() => <h3>test home</h3>}
+            />
+            <HomeRoute
+              path={`${path}/input-barang`}
+              setPageTitle={setPageTitle}
+              title="Input Barang"
+              component={InputBarang}
+            />
+          </Switch>
+        </Suspense>
       </main>
     </div>
   );
